@@ -109,7 +109,9 @@ export default {
 
   computed: {
     filteredRooms() {
-      return filteredItems(this.rooms || [], 'roomName', this.filter)
+      return this.customSearchRoomEnabled
+        ? this.rooms || []
+        : filteredItems(this.rooms || [], 'roomName', this.filter)
     }
   },
 
@@ -220,12 +222,6 @@ export default {
 
 			if (this.customSearchRoomEnabled) {
 				this.$emit('search-room', this.filter)
-			} else {
-				this.filteredRooms = filteredItems(
-					this.rooms,
-					'roomName',
-          this.filter
-				)
 			}
 		},
 		openRoom(room) {
