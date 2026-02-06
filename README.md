@@ -1,23 +1,18 @@
 <p align="center">
-  <a href="https://github.com/advanced-chat/vue-advanced-chat/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/advanced-chat/vue-advanced-chat/release.yml?branch=main"></a>
-  <a href="https://www.npmjs.com/package/vue-advanced-chat"><img src="https://img.shields.io/npm/dm/vue-advanced-chat.svg"></a>
-  <a href="https://www.npmjs.com/package/vue-advanced-chat"><img src="https://img.shields.io/bundlephobia/minzip/vue-advanced-chat"></a>
-  <a href="https://www.npmjs.com/package/vue-advanced-chat"><img src="https://img.shields.io/npm/v/vue-advanced-chat.svg"></a>
-  <a href="https://www.npmjs.com/package/vue-advanced-chat"><img src="https://img.shields.io/npm/l/vue-advanced-chat.svg"></a>
+  <a href="https://github.com/Matt0550/better-better-vue-advanced-chat/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/advanced-chat/better-vue-advanced-chat/release.yml?branch=main"></a>
+  <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/npm/dm/better-vue-advanced-chat.svg"></a>
+  <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/bundlephobia/minzip/better-vue-advanced-chat"></a>
+  <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/npm/v/better-vue-advanced-chat.svg"></a>
+  <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/npm/l/better-vue-advanced-chat.svg"></a>
 </p>
 
-# vue-advanced-chat
+# better-vue-advanced-chat
 
 ![Demo Image](demo/firebase/src/assets/web_mobile.png)
 
-## Sponsors
+> [!NOTE] This is a fork of the original `vue-advanced-chat` component. This fork includes new features and improvements, while keeping the original component's core functionalities and performance optimizations.
 
-<div align="center">
-  <a target="_blank" href="https://chatkitty.com/docs">
-    <img alt="ChatKitty sponsor" src="demo/firebase/src/assets/sponsors/chatkitty.png" width="220">
-  </a>
-  <div>Easy to use <a target="_blank" href="https://chatkitty.com/docs">Chat API</a> with scalable infrastructure</div>
-</div>
+> [!WARNING] This readme is still a work in progress, and some sections may be incomplete or missing. Please refer to the original `vue-advanced-chat` documentation for more information on the features and usage of the component.
 
 ## Features
 
@@ -35,13 +30,16 @@
 - Firestore example
 - Typescript, PWA, Web Component support
 
-## [Demo](https://advanced-chat.github.io/vue-advanced-chat)
+## New fork features
+- Custom actions with multiple triggers and tagging
+
+## [Demo](https://advanced-chat.github.io/better-vue-advanced-chat)
 
 Enjoy :smile:
 
-## [Real World Example](https://vue-advanced-chat-app.netlify.app/)
+## [Real World Example](https://better-vue-advanced-chat-app.netlify.app/)
 
-A Progressive Web Application showcasing all the features of `vue-advanced-chat` component.<br>
+A Progressive Web Application showcasing all the features of `better-vue-advanced-chat` component.<br>
 Built with Firestore, Vuetify, and Push Notifications.
 
 If you wish to get premium access to the real world example source code, please contact me by email.
@@ -81,36 +79,36 @@ You will get a fully working chat application for web and mobile:
 
 ```bash
 # Using npm
-npm install --save vue-advanced-chat
+npm install --save better-vue-advanced-chat
 
 # Using yarn
-yarn add vue-advanced-chat
+yarn add better-vue-advanced-chat
 
 # Using CDN
-<script src="https://cdn.jsdelivr.net/npm/vue-advanced-chat@2.0.4/dist/vue-advanced-chat.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/better-vue-advanced-chat@2.0.4/dist/better-vue-advanced-chat.umd.js"></script>
 ```
 
 ### Vue
 
-Register `vue-advanced-chat` and `emoji-picker` as web components in your [config file](https://vuejs.org/guide/extras/web-components.html#example-vite-config):
+Register `better-vue-advanced-chat` and `emoji-picker` as web components in your [config file](https://vuejs.org/guide/extras/web-components.html#example-vite-config):
 
 ```javascript
 compilerOptions: {
   isCustomElement: tagName => {
-    return tagName === 'vue-advanced-chat' || tagName === 'emoji-picker'
+    return tagName === 'better-vue-advanced-chat' || tagName === 'emoji-picker'
   }
 }
 ```
 
-Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/main
+Demo: https://github.com/Matt0550/better-better-vue-advanced-chat-sandbox/tree/main
 
 ### React
 
-Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/react
+Demo: https://github.com/Matt0550/better-better-vue-advanced-chat-sandbox/tree/react
 
 ### Angular / Ionic
 
-Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/angular
+Demo: https://github.com/Matt0550/better-better-vue-advanced-chat-sandbox/tree/angular
 
 <br>
 
@@ -120,20 +118,21 @@ Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/angular
 
 ```javascript
 <template>
-  <vue-advanced-chat
+  <better-vue-advanced-chat
     :current-user-id="currentUserId"
     :rooms="JSON.stringify(rooms)"
     :messages="JSON.stringify(messages)"
     :room-actions="JSON.stringify(roomActions)"
+    :custom-actions="JSON.stringify(customActions)"
   />
 </template>
 
 <script>
-  import { register } from 'vue-advanced-chat'
+  import { register } from 'better-vue-advanced-chat'
   register()
 
   // Or if you used CDN import
-  // window['vue-advanced-chat'].register()
+  // window['better-vue-advanced-chat'].register()
 
   export default {
     data() {
@@ -145,6 +144,15 @@ Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/angular
           { name: 'inviteUser', title: 'Invite User' },
           { name: 'removeUser', title: 'Remove User' },
           { name: 'deleteRoom', title: 'Delete Room' }
+        ],
+        customActions: [
+          {
+            trigger: '$',
+            options: [
+              { id: 1, title: 'Action 1' },
+              { id: 2, title: 'Action 2' }
+            ]
+          }
         ]
       }
     }
@@ -154,7 +162,7 @@ Demo: https://github.com/advanced-chat/vue-advanced-chat-sandbox/tree/angular
 
 ### Important notes
 
-`vue-advanced-chat` component is performance oriented, hence you have to follow specific rules to make it work properly.
+`better-vue-advanced-chat` component is performance oriented, hence you have to follow specific rules to make it work properly.
 
 - Use array assignement instead of `push` method
 
@@ -239,6 +247,7 @@ Otherwise, you need to pass those props as strings. For example: `[messages]="JS
 | `message-actions`(12)               | [String, Array]  | -        | (11)                                                                                                              |
 | `message-selection-actions`(13)     | [String, Array]  | -        | (13)                                                                                                              |
 | `templates-text`(14)                | [String, Array]  | -        | `null`                                                                                                            |
+| `custom-actions`(32)                | [String, Array]  | -        | `[]`                                                                                                              |
 | `auto-scroll`(15)                   | [String, Object] | -        | `{ send: { new: true, newAfterScrollUp: true }, receive: { new: true, newAfterScrollUp: false } }`                |
 | `show-search`                       | Boolean          | -        | `true`                                                                                                            |
 | `show-add-room`                     | Boolean          | -        | `true`                                                                                                            |
@@ -496,6 +505,28 @@ Example: set `accepted-files="image/png, image/jpeg, application/pdf"` to allow 
 
 **(31)** `show-audio` can be used to enable or disable audio icon 
 
+**(32)** `custom-actions` can be used to add custom text triggers (like commands or other entities).
+Ex:
+
+```javascript
+custom-actions="[
+  {
+    trigger: '$',
+    options: [
+      { id: 1, title: 'Action 1' },
+      { id: 2, title: 'Action 2' }
+    ]
+  },
+  {
+    trigger: '!',
+    tag: 'issue', // Will render <issue>id</issue> in the message
+    options: [
+      { id: 123, title: 'Issue 123', description: 'My Issue', avatar: 'assets/imgs/issue.png' }
+    ]
+  }
+]"
+```
+
 ```javascript
 styles="{
   general: {
@@ -665,6 +696,7 @@ messages="[
 | `delete-message`                      | `{ roomId, message }`                                                      | Deleted a message                               |
 | `open-file`                           | `{ message, file }`                                                        | Clicked to view or download a file              |
 | `open-user-tag`(3)                    | `{ user }`                                                                 | Clicked on a user tag inside a message          |
+| `open-action-tag`(13)                 | `{ action, group }`                                                        | Clicked on a custom action tag inside a message |
 | `open-failed-message`                 | `{ roomId, message }`                                                      | Clicked on the failure icon next to a message   |
 | `add-room`                            | -                                                                          | Clicked on the plus icon next to searchbar      |
 | `search-room`(4)                      | `{ roomId, value }`                                                        | Typed a character in the room search input      |
@@ -762,6 +794,8 @@ messageSelectionActionHandler({ roomId, action, message }) {
 
 **(12)** `replyMessage` object is available when the user replied to another message by clicking the corresponding icon, and contains the message information that was clicked.
 
+**(13)** `open-action-tag` is triggered when clicking a custom action tag inside a message.
+
 <br>
 
 ## Named Slots
@@ -769,7 +803,7 @@ messageSelectionActionHandler({ roomId, action, message }) {
 Example:
 
 ```javascript
-<vue-advanced-chat>
+<better-vue-advanced-chat>
   <div slot="room-header">
     This is a new room header
   </div>
@@ -786,7 +820,7 @@ Example:
   <div v-for="message in messages" :slot="'message-avatar_' + message._id">
     New Avatar
   </div>
-</vue-advanced-chat>
+</better-vue-advanced-chat>
 ```
 
 | <div style="width:230px">Slot</div>         | Action                                                            |
@@ -848,7 +882,7 @@ Example:
 <br>
 
 ## Using with ChatKitty
-ChatKitty provides a full-featured UI to customize vue-advanced-chat easily without having to write or manage any chat code — frontend or backend. You can find more information on how to use ChatKitty with vue-advanced-chat in the [ChatKitty documentation](https://chatkitty.com/docs).
+ChatKitty provides a full-featured UI to customize better-vue-advanced-chat easily without having to write or manage any chat code — frontend or backend. You can find more information on how to use ChatKitty with better-vue-advanced-chat in the [ChatKitty documentation](https://chatkitty.com/docs).
 
 - Create a free ChatKitty account here [https://console.chatkitty.com](https://console.chatkitty.com)
 - Create a project and get your widget ID
@@ -875,14 +909,14 @@ import {ChatUi} from '@chatkitty/vue'
 
 You can find a full example in the `demo/chatkitty` folder.
 
-Customize your vue-advanced-chat theme and features using the ChatKitty console, setting the feature schema version to `vue-advanced-chat@2` in your project settings:
+Customize your better-vue-advanced-chat theme and features using the ChatKitty console, setting the feature schema version to `better-vue-advanced-chat@2` in your project settings:
 ![ChatKitty Console](demo/chatkitty/assets/chatkitty-console.png)
 
 ### Styling via ChatKitty
-You can customize the vue-advanced-chat theme directly from the ChatKitty console without having to write any code.
+You can customize the better-vue-advanced-chat theme directly from the ChatKitty console without having to write any code.
 
 - Go to the ChatKitty console [https://console.chatkitty.com](https://console.chatkitty.com)
-- In the code editor, setting the styles schema version to `vue-advanced-chat@2` and change the styles under the `styles` key to customize your chat theme.
+- In the code editor, setting the styles schema version to `better-vue-advanced-chat@2` and change the styles under the `styles` key to customize your chat theme.
 - You can find the full options [here](src/themes/index.js)
 
 ## Using with Firestore
@@ -894,7 +928,7 @@ You can find the source code to implement a full-featured chat app using Firebas
 To test it using your own Firebase project:
 
 - Setup Cloud Firestore (to store users and rooms) and Realtime Database (to store users online status)
-- Clone this repository: `git clone https://github.com/advanced-chat/vue-advanced-chat.git`
+- Clone this repository: `git clone https://github.com/Matt0550/better-better-vue-advanced-chat.git`
 - Inside `demo/firebase/src/database/index.js` file, replace the line `const config = ...` by your own Firebase config
 - Go inside `demo/firebase` folder and run `npm run serve`
 
@@ -955,7 +989,7 @@ messages: {
 
 <br>
 
-## [Contributing](https://github.com/advanced-chat/vue-advanced-chat/blob/master/.github/CONTRIBUTING.md)
+## [Contributing](https://github.com/Matt0550/better-better-vue-advanced-chat/blob/master/.github/CONTRIBUTING.md)
 
 Your help is always appreciated :rocket:
 

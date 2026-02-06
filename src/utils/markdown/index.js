@@ -1,5 +1,6 @@
 import { micromark } from 'micromark'
 import { gfm, gfmHtml } from 'micromark-extension-gfm'
+import { customtag, customtagHtml } from './customtag'
 import { underline, underlineHtml } from './underline'
 import { usertag, usertagHtml } from './usertag'
 
@@ -11,24 +12,35 @@ export default (text, { textFormatting }) => {
 			gfmDisabled = ['literalAutolink', 'literalAutolinkEmail']
 		}
 
-		const markdown = micromark(
-			text.replaceAll('<usertag>', '<@').replaceAll('</usertag>', '>'),
-			{
-				extensions: [
-					{
-						...gfm(),
-						disable: { null: gfmDisabled }
-					},
-					underline,
-					usertag
-				],
-				htmlExtensions: [
-					gfmHtml(),
-					underlineHtml,
-					usertagHtml(textFormatting.users)
-				]
-			}
-		)
+		let replacedText = text
+			.replaceAll('<usertag>', '<@')
+			.replaceAll('</usertag>', '>')
+
+		if (textFormatting.customActions) {
+			textFormatting.customActions.forEach(action => {
+				replacedText = replacedText
+					.replaceAll(`<${action.tag}>`, `<%${action.tag}:`)
+					.replaceAll(`</${action.tag}>`, '>')
+			})
+		}
+
+		const markdown = micromark(replacedText, {
+			extensions: [
+				{
+					...gfm(),
+					disable: { null: gfmDisabled }
+				},
+				underline,
+				usertag,
+				customtag
+			],
+			htmlExtensions: [
+				gfmHtml(),
+				underlineHtml,
+				usertagHtml(textFormatting.users),
+				customtagHtml(textFormatting.customActions)
+			]
+		})
 
 		if (textFormatting.singleLine) {
 			const element = document.createElement('div')

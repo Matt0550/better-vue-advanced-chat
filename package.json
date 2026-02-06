@@ -1,13 +1,13 @@
 {
-	"name": "vue-advanced-chat",
-	"version": "2.0.9",
+	"name": "better-vue-advanced-chat",
+	"version": "1.0.0",
 	"license": "MIT",
 	"description": "A beautiful chat rooms component made with Vue.js - compatible with Vue, React & Angular",
 	"author": {
 		"email": "antoindupontdev@gmail.com",
 		"name": "Antoine Dupont"
 	},
-	"types": "./types/vue-advanced-chat.common.d.ts",
+	"types": "./types/better-vue-advanced-chat.common.d.ts",
 	"keywords": [
 		"vue",
 		"vuejs",
@@ -20,16 +20,16 @@
 	],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/advanced-chat/vue-advanced-chat.git"
+		"url": "git+https://github.com/Matt0550/better-better-vue-advanced-chat.git"
 	},
 	"bugs": {
-		"url": "https://github.com/advanced-chat/vue-advanced-chat/issues"
+		"url": "https://github.com/Matt0550/better-better-vue-advanced-chat/issues"
 	},
-	"homepage": "https://github.com/advanced-chat/vue-advanced-chat#readme",
-	"main": "./dist/vue-advanced-chat.umd.js",
-	"module": "./dist/vue-advanced-chat.es.js",
-	"unpkg": "./dist/vue-advanced-chat.umd.js",
-	"jsdelivr": "./dist/vue-advanced-chat.umd.js",
+	"homepage": "https://github.com/Matt0550/better-better-vue-advanced-chat#readme",
+	"main": "./dist/better-vue-advanced-chat.umd.js",
+	"module": "./dist/better-vue-advanced-chat.es.js",
+	"unpkg": "./dist/better-vue-advanced-chat.umd.js",
+	"jsdelivr": "./dist/better-vue-advanced-chat.umd.js",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",

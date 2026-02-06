@@ -68,6 +68,7 @@
 				:capture-files="captureFiles"
 				:multiple-files="multipleFilesCasted"
 				:templates-text="templatesTextCasted"
+				:custom-actions="customActionsCasted"
 				:username-options="usernameOptionsCasted"
 				:emoji-data-source="emojiDataSource"
 				@toggle-rooms-list="toggleRoomsList"
@@ -78,6 +79,7 @@
 				@delete-message="deleteMessage"
 				@open-file="openFile"
 				@open-user-tag="openUserTag"
+				@open-action-tag="openActionTag"
 				@open-failed-message="openFailedMessage"
 				@menu-action-handler="menuActionHandler"
 				@message-action-handler="messageActionHandler"
@@ -202,6 +204,7 @@ export default {
 		captureFiles: { type: String, default: '' },
 		multipleFiles: { type: [Boolean, String], default: true },
 		templatesText: { type: [Array, String], default: () => [] },
+		customActions: { type: [Array, String], default: () => [] },
 		mediaPreviewEnabled: { type: [Boolean, String], default: true },
 		usernameOptions: {
 			type: [Object, String],
@@ -219,6 +222,7 @@ export default {
 		'delete-message',
 		'open-file',
 		'open-user-tag',
+		'open-action-tag',
 		'open-failed-message',
 		'menu-action-handler',
 		'message-action-handler',
@@ -363,6 +367,9 @@ export default {
 		templatesTextCasted() {
 			return this.castArray(this.templatesText)
 		},
+		customActionsCasted() {
+			return this.castArray(this.customActions)
+		},
 		stylesCasted() {
 			return this.castObject(this.styles)
 		},
@@ -373,7 +380,10 @@ export default {
 			return this.castObject(this.autoScroll)
 		},
 		textFormattingCasted() {
-			return this.castObject(this.textFormatting)
+			return {
+				...this.castObject(this.textFormatting),
+				customActions: this.customActionsCasted
+			}
 		},
 		linkOptionsCasted() {
 			return this.castObject(this.linkOptions)
@@ -518,6 +528,9 @@ export default {
 		},
 		openUserTag({ user }) {
 			this.$emit('open-user-tag', { user })
+		},
+		openActionTag(detail) {
+			this.$emit('open-action-tag', detail)
 		},
 		openFailedMessage({ message }) {
 			this.$emit('open-failed-message', {

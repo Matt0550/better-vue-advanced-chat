@@ -31,6 +31,14 @@
 			@activate-item="activeUpOrDownTemplatesText = 0"
 		/>
 
+		<room-custom-actions
+			:filtered-actions="filteredCustomActions"
+			:select-item="selectCustomActionItem"
+			:active-up-or-down="activeUpOrDownCustomActions"
+			@select-action="selectCustomAction($event)"
+			@activate-item="activeUpOrDownCustomActions = 0"
+		/>
+
 		<room-message-reply
 			:room="room"
 			:message-reply="messageReply"
@@ -197,6 +205,7 @@ import RoomMessageReply from './RoomMessageReply/RoomMessageReply'
 import RoomUsersTag from './RoomUsersTag/RoomUsersTag'
 import RoomEmojis from './RoomEmojis/RoomEmojis'
 import RoomTemplatesText from './RoomTemplatesText/RoomTemplatesText'
+import RoomCustomActions from './RoomCustomActions/RoomCustomActions'
 
 import vClickOutside from '../../../utils/on-click-outside'
 import filteredItems from '../../../utils/filter-items'
@@ -215,7 +224,8 @@ export default {
 		RoomMessageReply,
 		RoomUsersTag,
 		RoomEmojis,
-		RoomTemplatesText
+		RoomTemplatesText,
+		RoomCustomActions
 	},
 
 	directives: {
@@ -242,6 +252,7 @@ export default {
 		userTagsEnabled: { type: Boolean, required: true },
 		emojisSuggestionEnabled: { type: Boolean, required: true },
 		templatesText: { type: Array, default: null },
+		customActions: { type: Array, default: null },
 		audioBitRate: { type: Number, required: true },
 		audioSampleRate: { type: Number, required: true },
 		initReplyMessage: { type: Object, default: null },
@@ -269,17 +280,22 @@ export default {
 			selectUsersTagItem: null,
 			selectEmojiItem: null,
 			selectTemplatesTextItem: null,
+			selectCustomActionItem: null,
 			format: 'mp3',
 			activeUpOrDownEmojis: null,
 			activeUpOrDownUsersTag: null,
 			activeUpOrDownTemplatesText: null,
+			activeUpOrDownCustomActions: null,
 			emojisDB: new Database({ dataSource: this.emojiDataSource }),
 			emojiOpened: false,
 			keepKeyboardOpen: false,
 			filteredEmojis: [],
 			filteredUsersTag: [],
 			selectedUsersTag: [],
+			selectedCustomTags: [],
 			filteredTemplatesText: [],
+			filteredCustomActions: [],
+			activeCustomActionConfig: null,
 			recorder: this.initRecorder(),
 			isRecording: false
 		}
@@ -300,10 +316,11 @@ export default {
 				!!this.filteredEmojis.length ||
 				!!this.filteredUsersTag.length ||
 				!!this.filteredTemplatesText.length ||
+				!!this.filteredCustomActions.length ||
 				!!this.files.length ||
 				!!this.messageReply
 			)
-		}
+		},
 	},
 
 	watch: {
@@ -357,7 +374,8 @@ export default {
 					isComposed &&
 					!this.filteredEmojis.length &&
 					!this.filteredUsersTag.length &&
-					!this.filteredTemplatesText.length
+					!this.filteredTemplatesText.length &&
+					!this.filteredCustomActions.length
 				) {
 					this.sendMessage()
 				}
@@ -433,6 +451,8 @@ export default {
 			else if (this.filteredUsersTag.length) this.filteredUsersTag = []
 			else if (this.filteredTemplatesText.length) {
 				this.filteredTemplatesText = []
+			} else if (this.filteredCustomActions.length) {
+				this.filteredCustomActions = []
 			} else this.resetMessage()
 		},
 		onPasteImage(pasteEvent) {
@@ -457,6 +477,9 @@ export default {
 			} else if (this.filteredTemplatesText.length) {
 				this.activeUpOrDownTemplatesText = direction
 				event.preventDefault()
+			} else if (this.filteredCustomActions.length) {
+				this.activeUpOrDownCustomActions = direction
+				event.preventDefault()
 			}
 		},
 		selectItem() {
@@ -466,6 +489,8 @@ export default {
 				this.selectUsersTagItem = true
 			} else if (this.filteredTemplatesText.length) {
 				this.selectTemplatesTextItem = true
+			} else if (this.filteredCustomActions.length) {
+				this.selectCustomActionItem = true
 			}
 		},
 		selectEmoji(emoji) {
@@ -502,6 +527,51 @@ export default {
 
 			this.cursorRangePosition =
 				position + template.text.length + space.length + 1
+
+			this.focusTextarea()
+		},
+		selectCustomAction(action, config = null, editMode = false) {
+			this.selectCustomActionItem = false
+
+			if (!action) return
+
+			const currentConfig = config || this.activeCustomActionConfig
+
+			if (!currentConfig) return
+
+			const { position, endPosition } = this.getCharPosition(
+				currentConfig.trigger
+			)
+
+			const space = this.message.substr(endPosition, endPosition).length
+				? ''
+				: ' '
+
+			this.message =
+				this.message.substr(0, position - 1) +
+				currentConfig.trigger +
+				action.title +
+				space +
+				this.message.substr(endPosition, this.message.length - 1)
+
+			if (currentConfig.tag) {
+				this.selectedCustomTags = [
+					...this.selectedCustomTags,
+					{
+						...action,
+						tag: currentConfig.tag,
+						trigger: currentConfig.trigger
+					}
+				]
+			}
+
+			if (!editMode) {
+				this.cursorRangePosition =
+					position +
+					currentConfig.trigger.length +
+					action.title.length +
+					space.length
+			}
 
 			this.focusTextarea()
 		},
@@ -602,6 +672,16 @@ export default {
 				)
 			})
 
+			this.selectedCustomTags.forEach(val => {
+				const tag = val.tag
+				if (tag) {
+					message = message.replace(
+						`${val.trigger}${val.title}`,
+						`<${tag}>${val.id}</${tag}>`
+					)
+				}
+			})
+
 			const files = this.files.length ? this.files : null
 
 			if (this.editedMessage._id) {
@@ -615,7 +695,8 @@ export default {
 						newContent: message,
 						files: files,
 						replyMessage: this.messageReply,
-						usersTag: this.selectedUsersTag
+						usersTag: this.selectedUsersTag,
+						customTags: this.selectedCustomTags
 					})
 				}
 			} else {
@@ -623,7 +704,8 @@ export default {
 					content: message,
 					files: files,
 					replyMessage: this.messageReply,
-					usersTag: this.selectedUsersTag
+					usersTag: this.selectedUsersTag,
+					customTags: this.selectedCustomTags
 				})
 			}
 
@@ -660,6 +742,40 @@ export default {
 				this.selectUserTag(user, true)
 			})
 
+			// Custom tags
+			if (this.customActions) {
+				this.customActions.forEach(config => {
+					if (config.tag) {
+						const firstTag = `<${config.tag}>`
+						const secondTag = `</${config.tag}>`
+
+						const tags = [
+							...messageContent.matchAll(new RegExp(firstTag, 'gi'))
+						].map(a => a.index)
+
+						tags.forEach(index => {
+							const id = initialContent.substring(
+								index + firstTag.length,
+								initialContent.indexOf(secondTag, index)
+							)
+
+							const option = config.options.find(
+								customAction => String(customAction.id) === id
+							)
+
+							if (option) {
+								messageContent = messageContent.replace(
+									`${firstTag}${id}${secondTag}`,
+									`${config.trigger}${option.title}`
+								)
+
+								this.selectCustomAction(option, config, true)
+							}
+						})
+					}
+				})
+			}
+
 			this.message = messageContent
 
 			if (message.files) {
@@ -677,20 +793,38 @@ export default {
 			this.updateFooterList('@')
 			this.updateFooterList(':')
 			this.updateFooterList('/')
+
+			if (this.customActions) {
+				let found = false
+				for (const config of this.customActions) {
+					if (this.updateFooterList(config.trigger, config)) {
+						found = true
+						break
+					}
+				}
+				if (!found) {
+					this.filteredCustomActions = []
+					this.activeCustomActionConfig = null
+				}
+			}
 		},
-		updateFooterList(tagChar) {
-			if (!this.getTextareaRef()) return
+		updateFooterList(tagChar, config = null) {
+			if (!this.getTextareaRef()) return false
 
 			if (tagChar === ':' && !this.emojisSuggestionEnabled) {
-				return
+				return false
 			}
 
 			if (tagChar === '@' && (!this.userTagsEnabled || !this.room.users)) {
-				return
+				return false
 			}
 
 			if (tagChar === '/' && !this.templatesText) {
-				return
+				return false
+			}
+
+			if (config && (!config.options || !config.trigger)) {
+				return false
 			}
 
 			const textareaCursorPosition = this.getTextareaRef().selectionStart
@@ -720,9 +854,15 @@ export default {
 					this.updateShowUsersTag(query)
 				} else if (tagChar === '/') {
 					this.updateShowTemplatesText(query)
+				} else if (config) {
+					this.updateShowCustomActions(query, config)
 				}
+				return true
 			} else {
-				this.resetFooterList(tagChar)
+				if (!config) {
+					this.resetFooterList(tagChar)
+				}
+				return false
 			}
 		},
 		updateShowUsersTag(query) {
@@ -767,6 +907,15 @@ export default {
 				true
 			)
 		},
+		updateShowCustomActions(query, config) {
+			this.activeCustomActionConfig = config
+			this.filteredCustomActions = filteredItems(
+				config.options,
+				'title',
+				query,
+				true
+			)
+		},
 		getCharPosition(tagChar) {
 			const cursorPosition = this.getTextareaRef().selectionStart
 
@@ -792,10 +941,15 @@ export default {
 				this.filteredUsersTag = []
 			} else if (tagChar === '/') {
 				this.filteredTemplatesText = []
+			} else if (tagChar) {
+				this.filteredCustomActions = []
+				this.activeCustomActionConfig = null
 			} else {
 				this.filteredEmojis = []
 				this.filteredUsersTag = []
 				this.filteredTemplatesText = []
+				this.filteredCustomActions = []
+				this.activeCustomActionConfig = null
 			}
 		},
 		resetMessage(disableMobileFocus = false, initRoom = false) {

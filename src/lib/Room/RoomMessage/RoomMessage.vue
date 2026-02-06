@@ -100,6 +100,7 @@
 							:text-messages="textMessages"
 							:link-options="linkOptions"
 							@open-user-tag="openUserTag"
+							@open-action-tag="openActionTag"
 						>
 							<template v-for="(idx, name) in $slots" #[name]="data">
 								<slot :name="name" v-bind="data" />
@@ -271,6 +272,7 @@ export default {
 		'message-added',
 		'open-file',
 		'open-user-tag',
+		'open-action-tag',
 		'open-failed-message',
 		'message-action-handler',
 		'send-message-reaction',
@@ -404,6 +406,9 @@ export default {
 		},
 		openUserTag(user) {
 			this.$emit('open-user-tag', { user })
+		},
+		openActionTag(detail) {
+			this.$emit('open-action-tag', detail)
 		},
 		messageActionHandler(action) {
 			this.resetMessageHover()

@@ -57,6 +57,20 @@ export interface MessageReactions {
 	[key: string]: StringNumber[]
 }
 
+export interface CustomActionOption {
+	id: StringNumber
+	title: string
+	description?: string
+	avatar?: string
+	[key: string]: any
+}
+
+export interface CustomActionGroup {
+	trigger: string
+	tag?: string
+	options: CustomActionOption[]
+}
+
 export interface Message {
 	_id: string
 	senderId: string
@@ -143,6 +157,7 @@ export interface Props {
 	'message-actions'?: MessageActions
 	'message-selection-actions'?: CustomAction[]
 	'templates-text'?: TemplatesText
+	'custom-actions'?: CustomActionGroup[]
 	'auto-scroll'?: AutoScroll
 	'show-search'?: boolean
 	'show-add-room'?: boolean

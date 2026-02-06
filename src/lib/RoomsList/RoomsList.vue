@@ -107,14 +107,6 @@ export default {
     minimumVisibleRooms: { type: Number, default: 10 }
 	},
 
-  computed: {
-    filteredRooms() {
-      return this.customSearchRoomEnabled
-        ? this.rooms || []
-        : filteredItems(this.rooms || [], 'roomName', this.filter)
-    }
-  },
-
 	emits: [
 		'add-room',
 		'search-room',
@@ -133,6 +125,14 @@ export default {
 			selectedRoomId: ''
 		}
 	},
+
+  computed: {
+    filteredRooms() {
+      return this.customSearchRoomEnabled
+        ? this.rooms || []
+        : filteredItems(this.rooms || [], 'roomName', this.filter)
+    }
+  },
 
 	watch: {
     rooms: {

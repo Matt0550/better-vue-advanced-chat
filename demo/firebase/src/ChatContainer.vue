@@ -29,7 +29,7 @@
 			<button class="button-cancel" @click="removeRoomId = null">Cancel</button>
 		</form>
 
-		<vue-advanced-chat
+		<better-vue-advanced-chat
 			ref="chatWindow"
 			:height="screenHeight"
 			:theme="theme"
@@ -70,7 +70,7 @@
 			>
 				New message container
 			</div> -->
-		</vue-advanced-chat>
+		</better-vue-advanced-chat>
 	</div>
 </template>
 
@@ -81,8 +81,8 @@ import * as storageService from '@/database/storage'
 import { parseTimestamp, formatTimestamp } from '@/utils/dates'
 import logoAvatar from '@/assets/logo.png'
 
-import { register } from 'vue-advanced-chat'
-// import { register } from './../../dist/vue-advanced-chat.es.js'
+import { register } from 'better-vue-advanced-chat'
+// import { register } from './../../dist/better-vue-advanced-chat.es.js'
 // import { register } from './../../src/lib/index.js'
 register()
 

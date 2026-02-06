@@ -97,6 +97,7 @@
 								@message-action-handler="messageActionHandler"
 								@open-file="openFile"
 								@open-user-tag="openUserTag"
+								@open-action-tag="openActionTag"
 								@open-failed-message="$emit('open-failed-message', $event)"
 								@send-message-reaction="sendMessageReaction"
 								@select-message="selectMessage"
@@ -147,6 +148,7 @@
 			:user-tags-enabled="userTagsEnabled"
 			:emojis-suggestion-enabled="emojisSuggestionEnabled"
 			:templates-text="templatesText"
+			:custom-actions="customActions"
 			:text-formatting="textFormatting"
 			:link-options="linkOptions"
 			:audio-bit-rate="audioBitRate"
@@ -224,6 +226,7 @@ export default {
 		emojisSuggestionEnabled: { type: Boolean, required: true },
 		scrollDistance: { type: Number, required: true },
 		templatesText: { type: Array, default: null },
+		customActions: { type: Array, default: null },
 		usernameOptions: { type: Object, required: true },
 		emojiDataSource: { type: String, default: undefined }
 	},
@@ -242,6 +245,7 @@ export default {
 		'typing-message',
 		'open-file',
 		'open-user-tag',
+		'open-action-tag',
 		'open-failed-message',
 		'textarea-action-handler'
 	],
@@ -564,6 +568,9 @@ export default {
 		},
 		openUserTag(user) {
 			this.$emit('open-user-tag', user)
+		},
+		openActionTag(detail) {
+			this.$emit('open-action-tag', detail)
 		},
 		onDropFiles(event) {
 			if (this.showFiles) {

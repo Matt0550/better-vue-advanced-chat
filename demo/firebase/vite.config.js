@@ -8,7 +8,7 @@ export default defineConfig({
 			template: {
 				compilerOptions: {
 					isCustomElement: tagName => {
-						return tagName === 'vue-advanced-chat' || tagName === 'emoji-picker'
+						return tagName === 'better-vue-advanced-chat' || tagName === 'emoji-picker'
 					}
 				}
 			}
@@ -23,5 +23,5 @@ export default defineConfig({
 	server: {
 		open: '/'
 	},
-	base: process.env.NODE_ENV === 'production' ? '/vue-advanced-chat/' : '/'
+	base: process.env.NODE_ENV === 'production' ? '/better-vue-advanced-chat/' : '/'
 })

@@ -22,8 +22,8 @@
 						'vac-text-tag': !singleLine && !reply && message.tag
 					}"
 					:href="message.href"
-					:target="message.href ? linkOptions.target : null"
-					:rel="message.href ? linkOptions.rel : null"
+					:target="message.href ? effectiveLinkTarget : null"
+					:rel="message.href ? effectiveLinkRel : null"
 				>
 					<template v-if="deleted">
 						<slot
@@ -89,7 +89,7 @@ export default {
 		linkOptions: { type: Object, required: true }
 	},
 
-	emits: ['open-user-tag'],
+	emits: ['open-user-tag', 'open-action-tag'],
 
 	computed: {
 		parsedMessage() {
@@ -122,6 +122,22 @@ export default {
 			})
 
 			return message
+		},
+
+		effectiveLinkTarget() {
+			return this.linkOptions && this.linkOptions.target
+				? this.linkOptions.target
+				: '_blank'
+		},
+
+		effectiveLinkRel() {
+			const explicitRel = this.linkOptions && this.linkOptions.rel
+			if (explicitRel) return explicitRel
+
+			const target = this.linkOptions && this.linkOptions.target
+			const usedTarget = target || '_blank'
+
+			return usedTarget === '_blank' ? 'noopener noreferrer' : null
 		}
 	},
 
@@ -157,9 +173,24 @@ export default {
 		},
 		openTag(event) {
 			const userId = event.target.getAttribute('data-user-id')
-			if (!this.singleLine && userId) {
-				const user = this.users.find(u => String(u._id) === userId)
-				this.$emit('open-user-tag', user)
+			const actionTag = event.target.getAttribute('data-action-tag')
+			const actionId = event.target.getAttribute('data-action-id')
+
+			if (!this.singleLine) {
+				if (userId) {
+					const user = this.users.find(u => String(u._id) === userId)
+					this.$emit('open-user-tag', user)
+				} else if (actionTag && actionId) {
+					const customActions = this.textFormatting.customActions || []
+					const group = customActions.find(g => g.tag === actionTag)
+					const action = group?.options.find(
+						o => String(o.id) === String(actionId)
+					)
+
+					if (action) {
+						this.$emit('open-action-tag', { action, group })
+					}
+				}
 			}
 		}
 	}

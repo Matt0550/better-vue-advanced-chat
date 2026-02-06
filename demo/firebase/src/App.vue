@@ -33,7 +33,7 @@
 					Dark
 				</button>
 				<button class="button-github">
-					<a href="https://github.com/advanced-chat/vue-advanced-chat">
+					<a href="https://github.com/Matt0550/better-better-vue-advanced-chat">
 						<img src="@/assets/github.svg" />
 					</a>
 				</button>
