@@ -320,7 +320,7 @@ export default {
 				!!this.files.length ||
 				!!this.messageReply
 			)
-		},
+		}
 	},
 
 	watch: {

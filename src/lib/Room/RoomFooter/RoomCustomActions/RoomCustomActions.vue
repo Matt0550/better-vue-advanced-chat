@@ -1,12 +1,16 @@
 <template>
     <transition name="vac-slide-up">
-        <div ref="container" v-if="filteredActions.length" class="vac-custom-action-container vac-app-box-shadow">
-            <div v-for="(action, index) in filteredActions" :key="index" class="vac-custom-action-box"
+        <div v-if="filteredActions.length" ref="container" class="vac-custom-action-container vac-app-box-shadow">
+            <div
+v-for="(action, index) in filteredActions" :key="index" class="vac-custom-action-box"
                 :class="{ 'vac-custom-action-active': index === activeItem }" @mouseover="activeItem = index"
-                @click="$emit('select-action', action)">
+                @click="$emit('select-action', action)"
+>
                 <div class="vac-custom-action-info">
-                    <div v-if="action.avatar" class="vac-custom-action-icon"
-                        :style="{ 'background-image': `url('${action.avatar}')` }" />
+                    <div
+v-if="action.avatar" class="vac-custom-action-icon"
+                        :style="{ 'background-image': `url('${action.avatar}')` }"
+/>
                     <div class="vac-custom-action-content">
                         <div class="vac-custom-action-title">
                             {{ action.title }}
@@ -36,17 +40,6 @@ export default {
     data() {
         return {
             activeItem: null
-        }
-    },
-
-    methods: {
-        scrollActiveIntoView() {
-            if (!this.$refs || !this.$refs.container) return
-            const items = this.$refs.container.querySelectorAll('.vac-custom-action-box')
-            if (!items || !items.length) return
-            const el = items[this.activeItem]
-            if (!el) return
-            el.scrollIntoView({ block: 'nearest' })
         }
     },
 
@@ -80,6 +73,17 @@ export default {
                 this.activeItem--
             }
             this.$emit('activate-item')
+        }
+    },
+
+    methods: {
+        scrollActiveIntoView() {
+            if (!this.$refs || !this.$refs.container) return
+            const items = this.$refs.container.querySelectorAll('.vac-custom-action-box')
+            if (!items || !items.length) return
+            const el = items[this.activeItem]
+            if (!el) return
+            el.scrollIntoView({ block: 'nearest' })
         }
     }
 }
