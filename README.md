@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/Matt0550/better-better-vue-advanced-chat/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/advanced-chat/better-vue-advanced-chat/release.yml?branch=main"></a>
+  <a href="https://github.com/Matt0550/better-better-vue-advanced-chat/actions/workflows/npm-publish.yml"><img src="https://img.shields.io/github/actions/workflow/status/advanced-chat/better-vue-advanced-chat/npm-publish.yml?branch=main"></a>
   <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/npm/dm/better-vue-advanced-chat.svg"></a>
   <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/bundlephobia/minzip/better-vue-advanced-chat"></a>
   <a href="https://www.npmjs.com/package/better-vue-advanced-chat"><img src="https://img.shields.io/npm/v/better-vue-advanced-chat.svg"></a>
