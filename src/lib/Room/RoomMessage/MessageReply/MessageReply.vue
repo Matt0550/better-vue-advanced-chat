@@ -1,13 +1,18 @@
 <template>
-	<div class="vac-reply-message" @click.capture="scrollToOriginal" :style="{ cursor: isClickable ? 'pointer' : 'default' }">
+	<div
+class="vac-reply-message" :style="{ cursor: isClickable ? 'pointer' : 'default' }"
+		@click.capture="scrollToOriginal"
+>
 		<div v-if="!replyMessage.deleted" class="vac-reply-username">
 			{{ replyUsername }}
 		</div>
 
 		<div v-if="isImage" class="vac-image-reply-container">
-			<div class="vac-message-image vac-message-image-reply" :style="{
+			<div
+class="vac-message-image vac-message-image-reply" :style="{
 				'background-image': `url('${firstFile.url}')`
-			}" />
+			}"
+/>
 		</div>
 
 		<div v-else-if="isVideo" class="vac-video-reply-container">
@@ -16,8 +21,10 @@
 			</video>
 		</div>
 
-		<audio-player v-else-if="isAudio" :src="firstFile.url" :message-selection-enabled="false"
-			@update-progress-time="progressTime = $event" @hover-audio-progress="hoverAudioProgress = $event">
+		<audio-player
+v-else-if="isAudio" :src="firstFile.url" :message-selection-enabled="false"
+			@update-progress-time="progressTime = $event" @hover-audio-progress="hoverAudioProgress = $event"
+>
 			<template v-for="(idx, name) in $slots" #[name]="data">
 				<slot :name="name" v-bind="data" />
 			</template>
@@ -40,9 +47,11 @@
 		</div>
 
 		<div class="vac-reply-content">
-			<format-message :message-id="replyMessage._id" :content="replyMessage.content"
+			<format-message
+:message-id="replyMessage._id" :content="replyMessage.content"
 				:deleted="!!replyMessage.deleted" :users="roomUsers" :text-messages="textMessages"
-				:text-formatting="textFormatting" :link-options="linkOptions" :reply="true" />
+				:text-formatting="textFormatting" :link-options="linkOptions" :reply="true"
+/>
 		</div>
 	</div>
 </template>
@@ -72,6 +81,9 @@ export default {
 		currentUserId: { type: [String, Number], required: true },
 		textMessages: { type: Object, required: true }
 	},
+	emits: [
+		'scroll-to'
+	],
 
 	computed: {
 		// use the latest state of the replied message from the messages array
@@ -112,8 +124,7 @@ export default {
 				!this.isVideo &&
 				!this.isImage
 			)
-		}
-		,
+		},
 		isClickable() {
 			if (!this.message.replyMessage) return false
 			return !!this.messages.find(m => m._id === this.message.replyMessage._id)

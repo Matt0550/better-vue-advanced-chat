@@ -141,6 +141,14 @@ export default {
 		}
 	},
 
+	mounted() {
+		this.applyLinkOptionsToMarkdownLinks()
+	},
+
+	updated() {
+		this.applyLinkOptionsToMarkdownLinks()
+	},
+
 	methods: {
 		checkType(message, type) {
 			return message.types && message.types.indexOf(type) !== -1
@@ -192,6 +200,18 @@ export default {
 					}
 				}
 			}
+		},
+		applyLinkOptionsToMarkdownLinks() {
+			if (!this.$el) return
+			const target = this.effectiveLinkTarget
+			const rel = this.effectiveLinkRel
+			const links = this.$el.querySelectorAll('.markdown a')
+			links.forEach(a => {
+				if (target) a.setAttribute('target', target)
+				else a.removeAttribute('target')
+				if (rel) a.setAttribute('rel', rel)
+				else a.removeAttribute('rel')
+			})
 		}
 	}
 }

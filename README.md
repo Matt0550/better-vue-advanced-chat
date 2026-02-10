@@ -32,37 +32,12 @@
 
 ## New fork features
 - Custom actions with multiple triggers and tagging
+- New prop to disable pasting files/images into the room textarea
+- Fixed link options to disable url links in messages, or change urls target
 - Hide delete and update message options with `canBeDeleted` and `canBeEdited` message properties
 - Scroll to original message (if in the current view) when clicking on a reply message
 - Now when a replied message is deleted, the reply message will still be displayed but with a "message deleted" text and without the possibility to click on it to scroll to the original message
 - UI improvements
-
-## [Demo](https://advanced-chat.github.io/better-vue-advanced-chat)
-
-Enjoy :smile:
-
-## [Real World Example](https://better-vue-advanced-chat-app.netlify.app/)
-
-A Progressive Web Application showcasing all the features of `better-vue-advanced-chat` component.<br>
-Built with Firestore, Vuetify, and Push Notifications.
-
-If you wish to get premium access to the real world example source code, please contact me by email.
-
-You will get a fully working chat application for web and mobile:
-
-- UI and backend integration
-- Email, Facebook and Google authentication
-- Real-time messaging, browser push notifications, images optimization (Firebase Cloud Functions to compress avatars)
-- UI/UX components for alerts (errors, information), dialogs, etc.
-- Add existing users to a room using their email
-- Send email invitations to non-existing users
-- Edition of profile and rooms
-- Addition and deletion of room users
-- Optimised firestore implementation to reduce bandwidth and costs as much as possible
-- State management using vuex
-- Internationalisation (i18n)
-- Google Analytics
-- Support to help you get the chat up and running
 
 <br>
 
@@ -279,6 +254,7 @@ Otherwise, you need to pass those props as strings. For example: `[messages]="JS
 | `theme`(26)                         | `light` / `dark` | -        | `light`                                                                                                           |
 | `accepted-files`(27)                | String           | -        | `*`                                                                                                               |
 | `capture-files`(28)                 | String           | -        | `''`                                                                                                              |
+| `paste-files-enabled`               | Boolean          | -        | `true`                                                                                                            |
 | `multiple-files`(29)                 | Boolean           | -        | `true`                                                                                                              |
 | `styles`(30)                        | [String, Object] | -        | (26)                                                                                                              |
 | `show-audio`(31)                        | Boolean | -        | `true`                                                                                                              |
@@ -502,6 +478,8 @@ You can then use the [textarea-action-handler](#events-api) event to call your o
 Example: set `accepted-files="image/png, image/jpeg, application/pdf"` to allow `JPG` `PNG` and `PDF` files only
 
 **(28)** `capture-files` can be used to enable direct capturing of photos and videos on mobile browsers, as opposed to just uploading existing photos and videos which are already on the device. See [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture) for more information and recognized values. By default, the attribute is omitted and mobile browsers will only offer the gallery to choose photos and videos. Note: this only affects file attachments. Audio messages are always recorded using the device's microphone.
+
+**(28a)** `paste-files-enabled` can be used to enable or disable pasting files/images into the room textarea. When set to `false`, pasted images or files will be ignored and not added to the attachments list. Default is `true`.
 
 **(29)** `multiple-files` can be used to define whether multiple file selections will be accepted. By default this is true.
 

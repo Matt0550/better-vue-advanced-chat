@@ -144,6 +144,7 @@
 			:accepted-files="acceptedFiles"
 			:capture-files="captureFiles"
 			:multiple-files="multipleFiles"
+			:paste-files-enabled="pasteFilesEnabled"
 			:textarea-action-enabled="textareaActionEnabled"
 			:textarea-auto-focus="textareaAutoFocus"
 			:user-tags-enabled="userTagsEnabled"
@@ -217,6 +218,7 @@ export default {
 		acceptedFiles: { type: String, required: true },
 		captureFiles: { type: String, required: true },
 		multipleFiles: { type: Boolean, default: true },
+		pasteFilesEnabled: { type: Boolean, default: true },
 		textFormatting: { type: Object, required: true },
 		linkOptions: { type: Object, required: true },
 		loadingRooms: { type: Boolean, required: true },

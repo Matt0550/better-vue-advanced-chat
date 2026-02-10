@@ -66,11 +66,13 @@
 				:scroll-distance="scrollDistance"
 				:accepted-files="acceptedFiles"
 				:capture-files="captureFiles"
+				:paste-files-enabled="pasteFilesEnabledCasted"
 				:multiple-files="multipleFilesCasted"
 				:templates-text="templatesTextCasted"
 				:custom-actions="customActionsCasted"
 				:username-options="usernameOptionsCasted"
 				:emoji-data-source="emojiDataSource"
+
 				@toggle-rooms-list="toggleRoomsList"
 				@room-info="roomInfo"
 				@fetch-messages="fetchMessages"
@@ -202,6 +204,7 @@ export default {
 		scrollDistance: { type: Number, default: 60 },
 		acceptedFiles: { type: String, default: '*' },
 		captureFiles: { type: String, default: '' },
+		pasteFilesEnabled: { type: [Boolean, String], default: true },
 		multipleFiles: { type: [Boolean, String], default: true },
 		templatesText: { type: [Array, String], default: () => [] },
 		customActions: { type: [Array, String], default: () => [] },
@@ -327,6 +330,9 @@ export default {
 		},
 		showFooterCasted() {
 			return this.castBoolean(this.showFooter)
+		},
+		pasteFilesEnabledCasted() {
+			return this.castBoolean(this.pasteFilesEnabled)
 		},
 		roomInfoEnabledCasted() {
 			return this.castBoolean(this.roomInfoEnabled)

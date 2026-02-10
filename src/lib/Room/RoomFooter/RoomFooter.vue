@@ -111,7 +111,7 @@
 				@input="onChangeInput"
 				@keydown.esc="escapeTextarea"
 				@keydown.enter.exact.prevent="selectItem"
-				@paste="onPasteImage"
+				@paste="handlePaste"
 				@keydown.tab.exact.prevent=""
 				@keydown.tab="selectItem"
 				@keydown.up="updateActiveUpOrDown($event, -1)"
@@ -242,6 +242,7 @@ export default {
 		showSendIcon: { type: Boolean, required: true },
 		showFiles: { type: Boolean, required: true },
 		showAudio: { type: Boolean, required: true },
+		pasteFilesEnabled: { type: Boolean, default: true },
 		showEmojis: { type: Boolean, required: true },
 		showFooter: { type: Boolean, required: true },
 		acceptedFiles: { type: String, required: true },
@@ -466,6 +467,12 @@ export default {
 					}
 				})
 			}
+		},
+		handlePaste(pasteEvent) {
+			// Prevent the browser from inserting image data/URL into the textarea
+			if (pasteEvent && pasteEvent.preventDefault) pasteEvent.preventDefault()
+			if (!this.pasteFilesEnabled) return
+			this.onPasteImage(pasteEvent)
 		},
 		updateActiveUpOrDown(event, direction) {
 			if (this.filteredEmojis.length) {

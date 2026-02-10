@@ -281,7 +281,8 @@ export default {
 		'message-action-handler',
 		'send-message-reaction',
 		'select-message',
-		'unselect-message'
+		'unselect-message',
+		'scroll-to'
 	],
 
 	data() {
