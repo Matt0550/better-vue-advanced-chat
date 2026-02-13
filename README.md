@@ -33,6 +33,7 @@
 ## New fork features
 - Custom actions with multiple triggers and tagging
 - New prop to disable pasting files/images into the room textarea
+- New prop to enable multi-user chat with specific UI improvements (for example, show usernames instead of online status when there are multiple users in the room)
 - Fixed link options to disable url links in messages, or change urls target
 - Hide delete and update message options with `canBeDeleted` and `canBeEdited` message properties
 - Scroll to original message (if in the current view) when clicking on a reply message
@@ -250,6 +251,7 @@ Otherwise, you need to pass those props as strings. For example: `[messages]="JS
 | `media-preview-enabled`             | Boolean          | -        | `true`                                                                                                            |
 | `responsive-breakpoint`(23)         | Number           | -        | `900`                                                                                                             |
 | `single-room`(24)                   | Boolean          | -        | `false`                                                                                                           |
+| `multi-user`                        | Boolean          | -        | `false`                                                                                                           |
 | `scroll-distance`(25)               | Number           | -        | `60`                                                                                                              |
 | `theme`(26)                         | `light` / `dark` | -        | `light`                                                                                                           |
 | `accepted-files`(27)                | String           | -        | `*`                                                                                                               |
@@ -469,6 +471,8 @@ You can then use the [textarea-action-handler](#events-api) event to call your o
 
 **(24)** `single-room` can be used if you never want to show the rooms list on the left. You still need to pass the `rooms` prop as an array with a single element.
 
+**(33)** `multi-user` can be set to `true` to enable multi-user/group UI: the room header shows a members list (instead of single-user "is online" status) and the rooms list will not show the green online dot for that room. Default: `false`.
+
 **(25)** `scroll-distance` can be used to change the number of pixels before `fetchMessages` event is triggered when scrolling up to load more messages, or `fetchMoreRooms` event is triggered when scrolling down to load more rooms.
 
 **(26)** `theme` can be used to change the chat theme. Currently, only `light` and `dark` are available.
@@ -573,6 +577,7 @@ rooms="[
         }
       }
     ],
+    isMultiUser: true,
     typingUsers: [ 4321 ]
   }
 ]"

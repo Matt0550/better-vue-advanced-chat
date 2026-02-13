@@ -99,6 +99,23 @@
 		color: var(--chat-header-color-info);
 	}
 
+	/* shorter members display for multi-user rooms */
+	.vac-room-info.members-list {
+		max-width: 320px; /* keep it short */
+		font-size: 12px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: inline-block;
+	}
+
+	@media only screen and (max-width: 768px) {
+		.vac-room-info.members-list {
+			max-width: 180px;
+			font-size: 11px;
+		}
+	}
+
 	.vac-room-options {
 		margin-left: auto;
 	}

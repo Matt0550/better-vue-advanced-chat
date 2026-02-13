@@ -72,6 +72,7 @@
 				:custom-actions="customActionsCasted"
 				:username-options="usernameOptionsCasted"
 				:emoji-data-source="emojiDataSource"
+				:multi-user="multiUser"
 
 				@toggle-rooms-list="toggleRoomsList"
 				@room-info="roomInfo"
@@ -213,7 +214,8 @@ export default {
 			type: [Object, String],
 			default: () => ({ minUsers: 3, currentUser: false })
 		},
-		emojiDataSource: { type: String, default: undefined }
+		emojiDataSource: { type: String, default: undefined },
+		multiUser: { type: [Boolean, String], default: false }
 	},
 
 	emits: [

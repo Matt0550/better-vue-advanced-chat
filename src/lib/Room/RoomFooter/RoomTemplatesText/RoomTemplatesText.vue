@@ -1,6 +1,7 @@
 <template>
 	<transition name="vac-slide-up">
 		<div
+			ref="container"
 			v-if="filteredTemplatesText.length"
 			class="vac-template-container vac-app-box-shadow"
 		>
@@ -49,6 +50,13 @@ export default {
 				this.activeItem = 0
 			}
 		},
+
+		activeItem() {
+			this.$nextTick(() => {
+				this.scrollActiveIntoView()
+			})
+		},
+
 		selectItem(val) {
 			if (val) {
 				this.$emit(
@@ -67,6 +75,17 @@ export default {
 				this.activeItem--
 			}
 			this.$emit('activate-item')
+		}
+	},
+
+	methods: {
+		scrollActiveIntoView() {
+			if (!this.$refs || !this.$refs.container) return
+			const items = this.$refs.container.querySelectorAll('.vac-template-box')
+			if (!items || !items.length) return
+			const el = items[this.activeItem]
+			if (!el) return
+			el.scrollIntoView({ block: 'nearest' })
 		}
 	}
 }

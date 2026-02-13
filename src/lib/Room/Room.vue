@@ -27,6 +27,7 @@
 			:message-selection-enabled="messageSelectionEnabled"
 			:message-selection-actions="messageSelectionActions"
 			:selected-messages-total="selectedMessages.length"
+			:multi-user="multiUser"
 			@toggle-rooms-list="$emit('toggle-rooms-list')"
 			@room-info="$emit('room-info')"
 			@menu-action-handler="$emit('menu-action-handler', $event)"
@@ -231,7 +232,8 @@ export default {
 		templatesText: { type: Array, default: null },
 		customActions: { type: Array, default: null },
 		usernameOptions: { type: Object, required: true },
-		emojiDataSource: { type: String, default: undefined }
+		emojiDataSource: { type: String, default: undefined },
+		multiUser: { type: Boolean, default: false }
 	},
 
 	emits: [

@@ -180,6 +180,9 @@ export default {
 			return `${user.username} - ${content}`
 		},
 		userStatus() {
+			// if the room explicitly marks itself as multi-user, don't show single-user status
+			if (this.room?.isMultiUser) return
+
 			if (!this.room.users || this.room.users.length !== 2) return
 
 			const user = this.room.users.find(u => u._id !== this.currentUserId)
