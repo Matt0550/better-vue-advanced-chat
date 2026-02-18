@@ -624,11 +624,50 @@ export default {
 				})
 			}
 		},
+
 		handlePaste(pasteEvent) {
-			// Prevent the browser from inserting image data/URL into the textarea
+			const clipboard = pasteEvent?.clipboardData || window.clipboardData
+			if (!clipboard) return
+
+			const items = Array.from(clipboard.items || [])
+			const hasFileItem = items.some(
+				it => it && (it.kind === 'file' || (it.type && it.type.startsWith('image')))
+			)
+			const textData = typeof clipboard.getData === 'function' ? clipboard.getData('text/plain') : ''
+
+			// If there are no file/image items — allow normal text paste
+			if (!hasFileItem) return
+
+			// Clipboard contains files/images
+			if (this.pasteFilesEnabled) {
+				// intercept: preserve any text and handle files
+				if (pasteEvent && pasteEvent.preventDefault) pasteEvent.preventDefault()
+
+				if (textData) {
+					const el = this.getTextareaRef()
+					const start = el ? el.selectionStart : this.message.length
+					const end = el ? el.selectionEnd : this.message.length
+
+					this.message = this.message.slice(0, start) + textData + this.message.slice(end)
+					this.cursorRangePosition = start + textData.length
+					this.$nextTick(() => {
+						this.resizeTextarea()
+						this.focusTextarea()
+						this.onChangeInput()
+					})
+				}
+
+				this.onPasteImage(pasteEvent)
+				return
+			}
+
+			// file pasting is disabled — allow text-only pastes, block pure-file pastes
+			if (textData) {
+				// let browser paste text
+				return
+			}
+
 			if (pasteEvent && pasteEvent.preventDefault) pasteEvent.preventDefault()
-			if (!this.pasteFilesEnabled) return
-			this.onPasteImage(pasteEvent)
 		},
 		updateActiveUpOrDown(event, direction) {
 			if (this.filteredEmojis.length) {
